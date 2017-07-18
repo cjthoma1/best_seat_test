@@ -22,7 +22,8 @@ const seatReserver = (seatMap, seatsToReserve) => {
    @param {array} reserved
  */
 const build = (row , col, reserved) => {
-	if(typeof row != "number" || typeof col != "number" || typeof reserved != "object"){
+		/* Make sure we're receiving the correct types and whole numbers */
+	if(typeof row != "number" || typeof col != "number" || typeof reserved != "object" || row % 1 != 0 || col % 1 != 0){
 		console.log("Wrong Argument, Try Again")
 		return map;
 	}
@@ -49,8 +50,8 @@ return seatReserver(seatMap, reserved);;
  * @param {number} n
  */
 const reserve = (map, n) => {
-	
-	if(typeof map != "object" || typeof n != "number" ){
+	/* Make sure we're receiving the correct types and whole numbers*/
+	if(typeof map != "object" || typeof n != "number" || n %1 != 0){
 		console.log("Wrong Argument, Try Again")
 		return map;
 	}
@@ -104,7 +105,7 @@ const reserve = (map, n) => {
 				}
 			}
 
-			/*Check our middle section */
+			/* Check our middle section */
 			for(let index = lowSeatCheck; index <= highSeatCheck; index++ ){
 				
 				/* If our seat is avaiable then push it to the back of the array */
@@ -125,7 +126,9 @@ const reserve = (map, n) => {
 
 		}
 		
-		/* If the middle seat of our row is not avaiable then lets proceed to check the lower end of seats first */
+		/* If the middle seat of our row is not avaiable or if there are no seats avaiable in the middle of the row
+			then lets proceed to check the lower end of seats first 
+		*/
 		for(;lowSeatCheck >= 0; --lowSeatCheck ){
 			
 			/* If our seat is avaiable then unshift it to the front of the array */
@@ -150,7 +153,7 @@ const reserve = (map, n) => {
 			}
 		}
 		
-		/* Check our higher section regardless  to ensure the best seats were found */ 
+		/* Check our higher section regardless to ensure the best seats were found */ 
 		for(;highSeatCheck < map[_row].length; highSeatCheck++ ){
 			
 			if(map[_row][highSeatCheck].available){
