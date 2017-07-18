@@ -1,5 +1,5 @@
 "use strict"
-/* Helper function used in 3 areas so I thought it would be better to write the function once*/
+/* Helper function used in 3 areas so I thought it would be better to write the function once */
 
 /**
  * @param {array} seatMap 
@@ -26,6 +26,7 @@ const build = (row , col, reserved) => {
 		console.log("Wrong Argument, Try Again")
 		return map;
 	}
+	
 let seatMap = [], rowArr = [], seat = {};
 
 /* Initilizing 2D array that will hold a rowArr, each rowArr will be holding a seat object*/
@@ -54,7 +55,7 @@ const reserve = (map, n) => {
 		return map;
 	}
 	
-	/*Make sure the user isn't reserving more than 10 seats at a time*/ 
+	/* Make sure the user isn't reserving more than 10 seats at a time */ 
 	if(n > 10){
 		console.log("Sorry but you can not order more than 10 tickets at one time, Try again");
 		return map;
@@ -62,13 +63,13 @@ const reserve = (map, n) => {
 	/* Establish how many rows we're working with */
 	let rows = map.length,
 	
-	/*Lexical needed to pull number from string ie R1C10 gives us 1 and 10  */ 
+	/*Lexical needed to pull number from string (ie. R1C10 gives us 1 and 10)  */ 
 	lexical = /\d+/g;
 	
 	/* Go through each row in an attempt to find the best seats possible */
  	for(let _row = 0; _row < rows; ++_row){
 		
-		/* Using 3 seperate arrays depending on who holds the best seats */
+		/* Using 3 seperate arrays depending on where the best seats are located */
    	 	let middleSeatsFound= [], lowSeatsFound = [], highSeatsFound = [],
 		
 		/* Our starting point will be the middle seat of the row */
@@ -77,13 +78,13 @@ const reserve = (map, n) => {
 		/* From there we will search high and low in order to provide our user the best seats in the house */
 		lowSeatCheck = sweetSeat, highSeatCheck = sweetSeat,
 		
-		/* Seat Numbers*/
+		/* Seat Numbers */
 		lowSeatNumber, highSeatNumber,
 		
-		/*Row and cols */
+		/* Row and cols */
 		highRowAndCol, lowRowAndCol;
 		
-		/* If our main seat is avaiable then lets begin our search in the middle section of the row */
+		/* If our middle seat is avaiable then lets begin our search in the middle section of the row */
 		if(map[_row][sweetSeat].available){
 			
 			/* Since our middle seat is avaiable the number of seats to search for is negated by 1 */
@@ -106,14 +107,15 @@ const reserve = (map, n) => {
 			/*Check our middle section */
 			for(let index = lowSeatCheck; index <= highSeatCheck; index++ ){
 				
-				
+				/* If our seat is avaiable then push it to the back of the array */
 				if(map[_row][index].available){
 					middleSeatsFound.push(`R${_row+1}C${index+1}`);	
 				}
+				/* Else we need to start our seat array over to ensure that the seats are contiguous */
 				else{
 					middleSeatsFound = [];
 				}
-				/*If our middle array equals n then return */
+				/* If our middle array equals n then return */
 				if(middleSeatsFound.length == n){
 					console.log(`${middleSeatsFound[0]}-${middleSeatsFound[middleSeatsFound.length-1]}`);
 					return seatReserver(map, middleSeatsFound);
@@ -123,7 +125,7 @@ const reserve = (map, n) => {
 
 		}
 		
-		/*If the middle seat of our row is not avaiable then lets proceed to check the lower end of seats first */
+		/* If the middle seat of our row is not avaiable then lets proceed to check the lower end of seats first */
 		for(;lowSeatCheck >= 0; --lowSeatCheck ){
 			
 			/* If our seat is avaiable then unshift it to the front of the array */
@@ -132,7 +134,7 @@ const reserve = (map, n) => {
 				lowSeatsFound.unshift(`R${_row+1}C${lowSeatCheck+1}`);
 			}
 			
-			/* Else we need to start our seat array over to ensure that the seats are consecetive */
+			/* Else we need to start our seat array over to ensure that the seats are contiguous */
 			else{
 				lowSeatsFound = [];
 			}
