@@ -1,5 +1,5 @@
 "use strict"
-/* Helper function used in 2 areas so I thought it would be better to write the function once*/
+/* Helper function used in 3 areas so I thought it would be better to write the function once*/
 const seatReserver = (seatMap, seatsToReserve) => { 
 	for (let seat_index = 0; seat_index < seatsToReserve.length; ++seat_index){
 		let r = seatsToReserve[seat_index][1] - 1;
@@ -14,6 +14,7 @@ const build = (row , col, reserved) => {
 	
 let seatMap = [], rowArr = [], seat = {};
 
+/* Initilizing 2D array that will hold a rowArr, each rowArr will be holding a seat object*/
 for(let _rowStart = 0; _rowStart < row; ++_rowStart){
 	for(let _colStart = 0; _colStart < col; ++_colStart){
 		seat = {};
@@ -37,10 +38,10 @@ const reserve = (map, n) => {
 	
  	for(let _row = 0; _row < rows; ++_row){
    	 	let middleSeatsFound= [], lowSeatsFound = [], highSeatsFound = [],
-		sweetSeat = Math.ceil(map[0].length/2)-1,
-		primary = [], secondary = [],
-		lowSeatsPriority = false, highSeatsPriority = false,
-		lowSeatCheck = sweetSeat-1, highSeatCheck = sweetSeat+1;
+		sweetSeat = Math.ceil(map[_row].length/2)-1,
+		// primary = [], secondary = [],
+// 		lowSeatsPriority = false, highSeatsPriority = false,
+		lowSeatCheck = sweetSeat, highSeatCheck = sweetSeat;
 		
 		// if(map[_row][sweetSeat].available){
 // 			primary.push(`R${_row+1}C${sweetSeat+1}`);
@@ -120,7 +121,7 @@ const reserve = (map, n) => {
 			while(numToSearchFor != 0){
 				--lowSeatCheck;
 				--numToSearchFor;
-
+				
 				if(numToSearchFor > 0){
 					++highSeatCheck;
 					--numToSearchFor;
@@ -128,20 +129,21 @@ const reserve = (map, n) => {
 			}
 
 
-			for(var index = lowSeatCheck; index <= highSeatCheck; ++index ){
-				if(middleSeatsFound.length == n){
-					console.log(`${middleSeatsFound[0]}-${middleSeatsFound[middleSeatsFound.length-1]}`);
-					return seatReserver(map, middleSeatsFound);
-
-				}
-				else if(map[_row][index].available){
-					middleSeatsFound.push(`R${_row+1}C${index}`);
+			for(let index = lowSeatCheck; index <= highSeatCheck; index++ ){				
+				if(map[_row][index].available){
+					middleSeatsFound.push(`R${_row+1}C${index+1}`);
+					console.log(`R${_row+1}C${index+1}`);
 				}
 				else{
 					middleSeatsFound = [];
 				}
+				if(middleSeatsFound.length == n){
+					console.log('ITS WORKING!!');
+					console.log(`${middleSeatsFound[0]}-${middleSeatsFound[middleSeatsFound.length-1]}`);
+					return seatReserver(map, middleSeatsFound);
+					
+				}
 			}
-
 
 		}
 
@@ -164,8 +166,6 @@ const reserve = (map, n) => {
 				return seatReserver(map, lowSeatsFound);
 			}
 			 else if(highSeatsFound.length == n){
-				 console.log( highSeatsFound[0][3])
-				console.log (lowSeatsFound[lowSeatsFound.length-1][3])
 				console.log(`${highSeatsFound[0]}-${highSeatsFound[highSeatsFound.length-1]}`);
 				return seatReserver(map, highSeatsFound);
 			}
